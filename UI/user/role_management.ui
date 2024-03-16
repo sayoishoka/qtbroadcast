@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Role_management</class>
+ <widget class="QWidget" name="Role_management">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1151</width>
+    <height>781</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>50</y>
+     <width>381</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>角色</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>50</y>
+     <width>100</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>搜索</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>150</y>
+     <width>1071</width>
+     <height>591</height>
+    </rect>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <column>
+    <property name="text">
+     <string>角色id</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>角色名</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>创建时间</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>最后修改</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>角色管理</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="increase">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>50</y>
+     <width>100</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>添加</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="delete_2">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>50</y>
+     <width>100</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>删除</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="modify">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>50</y>
+     <width>100</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>修改</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

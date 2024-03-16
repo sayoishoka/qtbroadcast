@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BroadcastMain</class>
+ <widget class="QWidget" name="BroadcastMain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>450</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>BroadcastMain</string>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>450</width>
+     <height>550</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.7, stop:0 rgba(0, 170, 255, 255), stop:1 rgba(255, 255, 255, 255))</string>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="page">
+    <widget class="QLineEdit" name="user_name">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>210</y>
+       <width>238</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 10pt &quot;Candara&quot;;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>180</y>
+       <width>51</width>
+       <height>89</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0)</string>
+     </property>
+     <property name="text">
+      <string>账号：</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="user_pwd">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>300</y>
+       <width>238</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 10pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>270</y>
+       <width>51</width>
+       <height>89</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(85, 255, 255, 0)</string>
+     </property>
+     <property name="text">
+      <string>密码：</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="logon">
+     <property name="geometry">
+      <rect>
+       <x>69</x>
+       <y>430</y>
+       <width>71</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.52, y1:1, x2:0.54, y2:0, 
+stop:0.0112994 rgba(64, 145, 252, 255), 
+stop:1 rgba(255, 255, 255, 255));
+color: rgb(255, 255, 255);
+ 
+border:0px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 14pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="text">
+      <string>登录</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="register_2">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>430</y>
+       <width>71</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.52, y1:1, x2:0.54, y2:0, 
+stop:0.0112994 rgba(64, 145, 252, 255), 
+stop:1 rgba(255, 255, 255, 255));
+color: rgb(255, 255, 255);
+ 
+border:0px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 14pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="text">
+      <string>注册</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="exit">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>430</y>
+       <width>71</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.52, y1:1, x2:0.54, y2:0, 
+stop:0.0112994 rgba(64, 145, 252, 255), 
+stop:1 rgba(255, 255, 255, 255));
+color: rgb(255, 255, 255);
+ 
+border:0px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 14pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="text">
+      <string>退出</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>50</y>
+       <width>371</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0);
+font-size: 35px </string>
+     </property>
+     <property name="text">
+      <string>音频广播系统服务端</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::AutoText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_2">
+    <widget class="QLineEdit" name="newuser_name">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>140</y>
+       <width>238</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 10pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="placeholderText">
+      <string>请输入未注册的账号</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>110</y>
+       <width>51</width>
+       <height>89</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0)</string>
+     </property>
+     <property name="text">
+      <string>账号：</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="newuser_pwd1">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>230</y>
+       <width>238</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 10pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="placeholderText">
+      <string>请输入新密码</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>200</y>
+       <width>51</width>
+       <height>89</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0)</string>
+     </property>
+     <property name="text">
+      <string>密码：</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="newuser_pwd2">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>320</y>
+       <width>238</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 10pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="placeholderText">
+      <string>请输入新密码与上面保持一致</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>290</y>
+       <width>81</width>
+       <height>89</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0)</string>
+     </property>
+     <property name="text">
+      <string>确认密码：</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="register_3">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>430</y>
+       <width>70</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.52, y1:1, x2:0.54, y2:0, 
+stop:0.0112994 rgba(64, 145, 252, 255), 
+stop:1 rgba(255, 255, 255, 255));
+color: rgb(255, 255, 255);
+ 
+border:0px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 14pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="text">
+      <string>注册</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="return_2">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>430</y>
+       <width>70</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0.52, y1:1, x2:0.54, y2:0, 
+stop:0.0112994 rgba(64, 145, 252, 255), 
+stop:1 rgba(255, 255, 255, 255));
+color: rgb(255, 255, 255);
+ 
+border:0px groove gray;border-radius:
+7px;padding:2px 4px;
+font: 14pt &quot;Candara&quot;;</string>
+     </property>
+     <property name="text">
+      <string>返回</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

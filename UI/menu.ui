@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Menu</class>
+ <widget class="QWidget" name="Menu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1300</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>音频广播管理系统</string>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>70</y>
+     <width>1151</width>
+     <height>780</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="page">
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>710</y>
+       <width>151</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>当前播放的节目名称</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>710</y>
+       <width>81</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>节目作者</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="play">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>720</y>
+       <width>40</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius: 20px;
+background-color: rgba(255, 255, 255, 0);
+background-image: url(:/images/play.png);
+background-position:center;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="stop">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>720</y>
+       <width>40</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius: 20px;
+background-color: rgba(255, 255, 255, 0);
+background-image: url(:/images/stop.png);
+background-position:center;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="Line" name="line_2">
+     <property name="geometry">
+      <rect>
+       <x>-3</x>
+       <y>690</y>
+       <width>1161</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>469</x>
+       <y>730</y>
+       <width>421</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>910</x>
+       <y>730</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00:00</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>960</x>
+       <y>730</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>00:00</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>950</x>
+       <y>730</y>
+       <width>16</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>/</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="programtable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>361</width>
+       <height>581</height>
+      </rect>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>20</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>86</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>节目名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>节目作者</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>节目时长</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>节目状态</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QTableWidget" name="tableWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>100</y>
+       <width>361</width>
+       <height>581</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>客户端连接状态：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>节目单</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>60</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>消息列表</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>小程序连接状态：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>60</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>当前节目总数：</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tableWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>100</y>
+       <width>351</width>
+       <height>581</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>60</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>音响状态</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="client_status">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>0</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>未连接</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="applet_status">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>未连接</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_2"/>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>151</width>
+     <height>851</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTreeWidget" name="treeWidget">
+      <column>
+       <property name="text">
+        <string>音响管理系统</string>
+       </property>
+      </column>
+      <item>
+       <property name="text">
+        <string>主页</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>系统管理</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>用户管理</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>权限管理</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>角色管理</string>
+        </property>
+       </item>
+      </item>
+      <item>
+       <property name="text">
+        <string>节目管理</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>音响设备管理</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>设备租用管理</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>租用管理</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>单位管理</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>计费管理</string>
+        </property>
+       </item>
+      </item>
+      <item>
+       <property name="text">
+        <string>分组管理</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>文件管理</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>审核列表</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>系统日志</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>60</y>
+     <width>1151</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>1179</x>
+     <y>0</y>
+     <width>121</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout"/>
+  </widget>
+  <widget class="QLabel" name="time">
+   <property name="geometry">
+    <rect>
+     <x>677</x>
+     <y>20</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>00:00:00</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
