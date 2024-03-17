@@ -80,8 +80,8 @@ void AddUser::on_yes_clicked()
         status = "0";
     }
 
-
-        // BroadcastMain::exeSql("UPDATE USER SET user_nickname = '"+name+"',user_name = '"+account+"',user_pw = '"+pass+"',role_no = '"+role+"',user_status = '"+status+"' WHERE user_id = '"+id+"'");
+        dbSelectUpdate e;
+        e.exeSql("UPDATE USER SET user_nickname = '"+name+"',user_name = '"+account+"',user_pw = '"+pass+"',role_no = '"+role+"',user_status = '"+status+"' WHERE user_id = '"+id+"'");
         this->close();
 //    }
 }

@@ -4,13 +4,13 @@
 #include "qpushbutton.h"
 #include "qsqlquery.h"
 #include "ui_devicerent_manager.h"
-
+#include "function/dbinteraction/db_device_rent.h"
 devicerent_manager::devicerent_manager(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::devicerent_manager)
 {
     ui->setupUi(this);
-
+    db_device_rent::getdb_device_rent();
     prepare();
     selectall();
 }

@@ -34,6 +34,7 @@ connect/http/httpserver.cpp \
 connect/http/httpsession.cpp \
 connect/tcp_ip/tcplink.cpp \
 function/dbinteraction/db_dev.cpp \
+    function/dbinteraction/db_device_rent.cpp \
 function/dbinteraction/db_file.cpp \
 function/dbinteraction/db_group.cpp \
 function/dbinteraction/db_pms_mg.cpp \
@@ -69,6 +70,7 @@ connect/http/httpsession.h \
 connect/tcp_ip/tcplink.h \
 function/daotype.h \
 function/dbinteraction.h \
+    function/dbinteraction/db_device_rent.h \
     function/dbinteraction/dbselectupdate.h \
     function/device.h \
 function/group.h \

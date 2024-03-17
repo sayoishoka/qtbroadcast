@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include "function/dbinteraction/dbselectupdate.h"
 namespace Ui {
 class AddUser;
 }
