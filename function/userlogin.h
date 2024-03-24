@@ -17,6 +17,7 @@ private:
     static userlogin * userlogin1;
 
     QJsonObject regist(QJsonObject jsonObj);
+    QJsonObject modify(QJsonObject jsonObj);
 public:
     explicit userlogin(QObject *parent = nullptr);
 

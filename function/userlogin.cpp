@@ -19,6 +19,8 @@ void userlogin::registerMethods(){
 
     dispatcher->Register("/login",std::bind(&userlogin::login, this,std::placeholders::_1));
     dispatcher->Register("regist",std::bind(&userlogin::regist, this,std::placeholders::_1));
+    dispatcher->Register("modify",std::bind(&userlogin::modify, this,std::placeholders::_1));
+
 
 }
 QJsonObject userlogin::login(QJsonObject jsonObj){
@@ -26,7 +28,7 @@ QJsonObject userlogin::login(QJsonObject jsonObj){
     // 从 jsonObj 中提取用户名和密码
     QString username = jsonObj["username"].toString();
     QString password = jsonObj["password"].toString();
-
+    QString role = QString::number(jsonObj["role"].toInt());
     qDebug()<<username;
 
     // 假设你有一个名为 `getUserInfo` 的函数，它接受一个用户名和密码，
@@ -55,17 +57,21 @@ QJsonObject userlogin::login(QJsonObject jsonObj){
 QJsonObject userlogin::getUserInfo(const QString& accountNumber, const QString& password) {
 
     QSqlQuery query;
-    query.prepare("SELECT * FROM User WHERE user_accountnumber = :accountNumber ");
-    query.bindValue(":accountNumber", accountNumber);
+    query.prepare("SELECT * FROM mobile_user WHERE username = :username ");
+    query.bindValue(":username", accountNumber);
     query.exec();
 
     if (query.next()) {
-         QString dbPassword = query.value("user_password").toString();
+         QString dbPassword = query.value("password").toString();
          if (dbPassword == password) {
         QJsonObject userInfo;
-        userInfo["id"] = query.value("userId").toInt();
-        userInfo["username"] = query.value("user_accountnumber").toString();
-        userInfo["password"] = query.value("user_password").toString();
+        userInfo["id"] = query.value("Id").toInt();
+        userInfo["username"] = query.value("username").toString();
+        userInfo["password"] = query.value("password").toString();
+        userInfo["avatar"] = query.value("avatar").toString();
+        userInfo["phone"] = query.value("phone").toString();
+        userInfo["email"] = query.value("email").toString();
+        userInfo["role"] = query.value("role").toInt();
         return userInfo;
          }
          else{
@@ -78,5 +84,67 @@ QJsonObject userlogin::getUserInfo(const QString& accountNumber, const QString& 
     }
 }
 QJsonObject userlogin::regist(QJsonObject jsonObj){
+    QString username = jsonObj["username"].toString();
+    QString password = jsonObj["password"].toString();
+    QString phone = QString::number(jsonObj["phone"].toInt());
+    QString email = jsonObj["email"].toString();
 
+    QSqlQuery query;
+    query.prepare("INSERT INTO mobile_user (username,password,phone,email) VALUES (':username',':password',':phone',':email')");
+    query.bindValue(":username", username);
+    query.bindValue(":password", password);
+    query.bindValue(":phone", phone);
+    query.bindValue(":email", email);
+    query.exec();
+
+    QJsonObject userInfo = getUserInfo(username,password);
+
+    return QJsonObject{
+     {"code", 200},
+     {"message", "成功"},
+     {"data", userInfo}
+    };
+}
+
+QJsonObject userlogin::modify(QJsonObject jsonObj)
+{
+    QString id = QString::number(jsonObj["id"].toInt());
+    QString username = jsonObj["username"].toString();
+    QString password = jsonObj["password"].toString();
+    QString avatar = jsonObj["avatar"].toString();
+    QString phone = QString::number(jsonObj["phone"].toInt());
+    QString email = jsonObj["email"].toString();
+    QString role = QString::number(jsonObj["role"].toInt());
+    if (!password.isEmpty()){
+        QSqlQuery query;
+        query.exec("UPDATE mobile_user SET password = '"+password+"' WHERE Id = '"+id+"'");
+    }
+    if (!username.isEmpty()){
+        QSqlQuery query;
+        query.exec("UPDATE mobile_user SET username = '"+username+"' WHERE Id = '"+id+"'");
+    }
+    if (!avatar.isEmpty()){
+        QSqlQuery query;
+        query.exec("UPDATE mobile_user SET avatar = '"+avatar+"' WHERE Id = '"+id+"'");
+    }
+    if (!email.isEmpty()){
+        QSqlQuery query;
+        query.exec("UPDATE mobile_user SET email = '"+email+"' WHERE Id = '"+id+"'");
+    }
+    if (!role.isEmpty()){
+        QSqlQuery query;
+        query.exec("UPDATE mobile_user SET userRole = '"+role+"' WHERE Id = '"+id+"'");
+    }
+    if (!phone.isEmpty()){
+        QSqlQuery query;
+        query.exec("UPDATE mobile_user SET phone = '"+phone+"' WHERE Id = '"+id+"'");
+    }
+
+    QJsonObject userInfo = getUserInfo(username,password);
+
+    return QJsonObject{
+     {"code", 200},
+     {"message", "成功"},
+     {"data", userInfo}
+    };
 }

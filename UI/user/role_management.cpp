@@ -2,17 +2,20 @@
 #include "function/dbinteraction/dbselectupdate.h"
 #include "ui_role_management.h"
 
+#include <QMessageBox>
+
 Role_management::Role_management(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Role_management)
 {
     ui->setupUi(this);
     setTable();
+    au = AddUser::getAddUser();
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, [=](){
         update_data();
     });//连接信号槽
-    timer->start(5000);//5s更新一次
+    timer->start(3000);//3s更新一次
     update_data();
     Dispatcher::getDispatcher()->Register("getAllRole",std::bind(&Role_management::getAllRole, this,std::placeholders::_1));
     Dispatcher::getDispatcher()->Register("addRole",std::bind(&Role_management::addRole, this,std::placeholders::_1));
@@ -100,4 +103,77 @@ QJsonObject Role_management::removeRole(QJsonObject &obj)
     QSqlQuery query = s.getData_Sheet("DELETE FROM role WHERE role_no='"+roleNo+"'");
     requestjson.insert("status",true);
     return requestjson;
+}
+
+void Role_management::on_delete_2_clicked()
+{
+    QMessageBox::StandardButton result=QMessageBox::question(this, "提示","是否删除所选中行数据");
+    if (result==QMessageBox::Yes){
+        qDebug() << "确定删除";
+        QList<QTableWidgetItem*> items = ui->tableWidget->selectedItems();
+        int count = items.count();
+        QStringList text;
+        for(int i = 0; i < count; i++)
+        {
+            int row = ui->tableWidget->row(items.at(i));
+            QTableWidgetItem *item = items.at(i);
+            text.append(item->text()); //获取内容
+        }
+        dbSelectUpdate e;
+        e.exeSql("DELETE FROM role WHERE role_no="+text.at(0));
+    }
+}
+
+void Role_management::on_pushButton_clicked()
+{
+    QString sheet = ui->lineEdit->text();
+    dbSelectUpdate e;
+    QSqlQuery query = e.getData_Sheet("SELECT * FROM role "
+                                      "WHERE role_no LIKE '%"+sheet+"%' "
+                                      "OR role_name LIKE '%"+sheet+"%'");
+    int number = query.size();
+    int row = 0;
+    if (number!=-1||number!=0){
+        ui->tableWidget->setRowCount(number);//设置行
+//        number=0;
+        while(query.next()){
+            for (int i=0;i<4;i++){
+                QTableWidgetItem* item1 = new QTableWidgetItem(query.value(i).toString());
+                ui->tableWidget->setItem(row,i,item1);
+                if (i==2||i==3){
+                    QTableWidgetItem* item1 = new QTableWidgetItem(query.value(i).toString().replace("T"," "));
+                    ui->tableWidget->setItem(row,i,item1);
+                }
+            }
+            row++;
+        }
+    }
+    timer->stop();
+}
+
+void Role_management::on_pushButton_2_clicked()
+{
+    timer->start(1000);
+}
+
+void Role_management::on_modify_clicked()
+{
+    QList<QTableWidgetItem*> items = ui->tableWidget->selectedItems();
+    int count = items.count();
+    QStringList text;
+    for(int i = 0; i < count; i++)
+   {
+       int row = ui->tableWidget->row(items.at(i));
+       QTableWidgetItem *item = items.at(i);
+       text.append(item->text()); //获取内容
+   }
+   au->get_role_data(&text);
+   au->role_modify_slot();
+   au->show();
+}
+
+void Role_management::on_increase_clicked()
+{
+    au->role_add_slot();
+    au->show();
 }

@@ -75,18 +75,6 @@ void User_Manage::update_data()
                     ui->tableWidget->setItem(row,i,item1);
                 }
             }
-//            QTableWidgetItem* item1 = new QTableWidgetItem(query.value(0).toString());
-//            QTableWidgetItem* item2 = new QTableWidgetItem(query.value(1).toString());
-//            QTableWidgetItem* item3 = new QTableWidgetItem(query.value(2).toString());
-//            QTableWidgetItem* item4 = new QTableWidgetItem(query.value(3).toString());
-//            QTableWidgetItem* item5 = new QTableWidgetItem(query.value(4).toString());
-//            QTableWidgetItem* item6 = new QTableWidgetItem(query.value(5).toString());
-//            ui->tableWidget->setItem(number,0, item1);
-//            ui->tableWidget->setItem(number,1, item2);
-//            ui->tableWidget->setItem(number,2, item3);
-//            ui->tableWidget->setItem(number,3, item4);
-//            ui->tableWidget->setItem(number,4, item5);
-//            ui->tableWidget->setItem(number,5, item6);
             row++;
         }
     }
@@ -173,7 +161,8 @@ void User_Manage::on_modify_clicked()
        text.append(item->text()); //获取内容
        qDebug() << item->text();
    }
-   au->getdata(&text);
+   au->get_user_data(&text);
+   au->user_modify_slot();
    au->show();
 }
 
@@ -194,4 +183,43 @@ void User_Manage::on_delete_2_clicked()
         dbSelectUpdate e;
         e.exeSql("DELETE FROM user WHERE user_id="+text.at(0));
     }
+}
+
+void User_Manage::on_increase_clicked()
+{
+    au->user_add_slot();
+    au->show();
+}
+
+void User_Manage::on_pushButton_clicked()
+{
+    QString sheet = ui->lineEdit->text();
+    dbSelectUpdate e;
+    QSqlQuery query = e.getData_Sheet("SELECT * FROM user "
+                                      "WHERE user_id LIKE '%"+sheet+"%' "
+                                      "OR user_nickname LIKE '%"+sheet+"%' "
+                                      "OR user_name LIKE '%"+sheet+"%'");
+    int number = query.size();
+    int row = 0;
+    if (number!=-1||number!=0){
+        ui->tableWidget->setRowCount(number);//设置行
+//        number=0;
+        while(query.next()){
+            for (int i=0;i<9;i++){
+                QTableWidgetItem* item1 = new QTableWidgetItem(query.value(i).toString());
+                ui->tableWidget->setItem(row,i,item1);
+                if (i==7||i==8){
+                    QTableWidgetItem* item1 = new QTableWidgetItem(query.value(i).toString().replace("T"," "));
+                    ui->tableWidget->setItem(row,i,item1);
+                }
+            }
+            row++;
+        }
+    }
+    timer->stop();
+}
+
+void User_Manage::on_pushButton_2_clicked()
+{
+    timer->start(1000);
 }

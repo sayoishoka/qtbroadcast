@@ -12,6 +12,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "connect/dispatcher.h"
+#include "UI/user/add/adduser.h"
 #include "function/dbinteraction/dbselectupdate.h"
 namespace Ui {
 class User_Manage;
@@ -34,10 +35,18 @@ public:
 
 signals:
     void getdata();
+    void user_modify();
+    void user_add();
 private slots:
     void on_modify_clicked();
 
     void on_delete_2_clicked();
+
+    void on_increase_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     QTimer* timer;
