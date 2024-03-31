@@ -31,6 +31,7 @@ void DeviceModule::InitMappper()
     Dispatcher *dispatcher = Dispatcher::getDispatcher();
 
     /* 注册功能 */
+    /* 客户端部分 */
     Func reGroupDevs = std::bind(&DeviceModule::ReGroupDevs, this, _1);
     dispatcher->Register("getGroupDevs", reGroupDevs);
 
@@ -39,6 +40,10 @@ void DeviceModule::InitMappper()
 
     Func reSetDevVolume = std::bind(&DeviceModule::ReSetDevVolume, this, _1);
     dispatcher->Register("setDevVolume",reSetDevVolume);
+    /* 小程序端部分 */
+    //用户获取音响列表
+    Dispatcher::getDispatcher()->Register("getGroupLists",std::bind(&DeviceModule::getGroupLists, this,std::placeholders::_1));
+
 }
 
 
@@ -113,6 +118,28 @@ QJsonObject DeviceModule::ReSetDevVolume(QJsonObject &data)
     obj.insert("response", "reSetDevVolume");
     obj.insert("status", status);
     return obj;
+}
+
+QJsonObject DeviceModule::getGroupLists(QJsonObject &data)
+{
+    QSqlQuery query;
+    QJsonArray grouplist;
+    query.exec("SELECT device.dev_no,device.dev_name,device.longitude,device.latitude,dev_rent.rental_status FROM device "
+               "LEFT JOIN dev_rent ON device.dev_no=dev_rent.dev_no");
+    while(query.next()){
+        QJsonObject dev;
+        dev.insert("devId",query.value(0).toInt());
+        dev.insert("devName",query.value(1).toString());
+        dev.insert("longitude",query.value(2).toString());
+        dev.insert("latitude",query.value(3).toString());
+        dev.insert("currentStatus",query.value(4).toInt());
+        grouplist.append(dev);
+    }
+    return QJsonObject{
+     {"code", 200},
+     {"message", "成功"},
+     {"data", grouplist}
+    };
 }
 
 unsigned char DeviceModule::GetVolume(unsigned int devNo)

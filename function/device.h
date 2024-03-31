@@ -26,10 +26,12 @@ private:
     void InitDev();       // 初始化设备集合
     //void FindNewDev();    // 查找新设备
 
-    /* 接口处理 */
+    /* 客户端接口处理 */
     QJsonObject ReGroupDevs(QJsonObject &data);
     QJsonObject ReAddDevice(QJsonObject &data);
     QJsonObject ReSetDevVolume(QJsonObject &data);
+    /* 小程序端接口处理 */
+    QJsonObject getGroupLists(QJsonObject &data);
 public:
     // 获取设备音量
     unsigned char GetVolume(unsigned int devNo);

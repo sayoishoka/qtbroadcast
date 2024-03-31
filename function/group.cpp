@@ -35,6 +35,7 @@ void GroupModule::InitMapper()
     Dispatcher *dispatcher = Dispatcher::getDispatcher();
 
     /* 注册功能 */
+    /* 客户端部分 */
     Func reGroupList = std::bind(&GroupModule::ReGroupList, this, _1);
     dispatcher->Register("getGroupList", reGroupList);
 

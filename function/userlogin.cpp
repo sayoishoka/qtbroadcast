@@ -18,7 +18,7 @@ void userlogin::registerMethods(){
     Dispatcher *dispatcher = Dispatcher::getDispatcher();
 
     dispatcher->Register("/login",std::bind(&userlogin::login, this,std::placeholders::_1));
-    dispatcher->Register("regist",std::bind(&userlogin::regist, this,std::placeholders::_1));
+    dispatcher->Register("/register",std::bind(&userlogin::regist, this,std::placeholders::_1));
     dispatcher->Register("modify",std::bind(&userlogin::modify, this,std::placeholders::_1));
 
 
@@ -71,7 +71,7 @@ QJsonObject userlogin::getUserInfo(const QString& accountNumber, const QString& 
         userInfo["avatar"] = query.value("avatar").toString();
         userInfo["phone"] = query.value("phone").toString();
         userInfo["email"] = query.value("email").toString();
-        userInfo["role"] = query.value("role").toInt();
+        userInfo["role"] = query.value("userRole").toInt();
         return userInfo;
          }
          else{
@@ -88,13 +88,15 @@ QJsonObject userlogin::regist(QJsonObject jsonObj){
     QString password = jsonObj["password"].toString();
     QString phone = QString::number(jsonObj["phone"].toInt());
     QString email = jsonObj["email"].toString();
-
+    QString Role = QString::number(jsonObj["role"].toInt());
+    qDebug()<<Role;
     QSqlQuery query;
-    query.prepare("INSERT INTO mobile_user (username,password,phone,email) VALUES (':username',':password',':phone',':email')");
+    query.prepare("INSERT INTO mobile_user (username,password,phone,email,userRole) VALUES (:username,:password,:phone,:email,:userRole)");
     query.bindValue(":username", username);
     query.bindValue(":password", password);
     query.bindValue(":phone", phone);
     query.bindValue(":email", email);
+    query.bindValue(":userRole", Role);
     query.exec();
 
     QJsonObject userInfo = getUserInfo(username,password);
