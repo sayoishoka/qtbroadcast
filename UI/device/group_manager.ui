@@ -120,45 +120,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSlider" name="horizontalSlider">
-           <property name="styleSheet">
-            <string notr="true">QSlider::groove:horizontal {
-            border: 0px solid #bbb;
-        }
-        QSlider::sub-page:horizontal {
-            background: rgb(90,49,255);
-            border-radius: 2px;
-            margin-top:13px;
-            margin-bottom:13px;
-        }
-        QSlider::add-page:horizontal {
-            background: rgb(255,255, 255);
-            border: 0px solid #777;
-            border-radius: 2px;
-            margin-top:9px;
-            margin-bottom:9px;
-        }
-        QSlider::handle:horizontal {
-            background: rgb(193,204,208);
-            width:14px;
-            border: 1px solid rgb(193,204,208);
-            border-radius: 7px;
-            margin-top:9px;
-            margin-bottom:9px;
-        }
-        QSlider::handle:horizontal:hover {
-            background: rgb(193,204,208);
-            width: 20px;
-            border: 1px solid rgb(193,204,208);
-            border-radius: 10px;
-            margin-top:6px;
-            margin-bottom:6px;
-        }</string>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
+          <widget class="QWidget" name="volume" native="true"/>
          </item>
         </layout>
        </item>

@@ -12,7 +12,7 @@ QVector<Device> SelectDevs();                                                   
 bool InsertDev(uint devNo, QString devName, uchar volume);                         // 插入设备
 bool setDevVolume(uint devNo, uchar volume);                                       // 设置设备音量
 uint getDevNo(QString devName);
-
+uint getDevGroupNo(int devNo);
 /** 分组 **/
 QVector<Group> GetAllGroup();                           // 获取所有分组信息
 bool InsertGroup(QString groupName, uint groupNo);      // 添加分组
@@ -24,7 +24,7 @@ uint getGroupNo(QString groupName);
 
 /** 节目 **/
 bool AddProgram(int pmNo, QString &pmName, int pmType, QString &playType, QTime &duration);         // 添加节目
-bool UpdateProgram(int oldPmNo, int newPmNo, QString &pmName, QString &playType, QTime &duration);  // 更新节目
+bool UpdateProgram(int oldPmNo, int newPmNo, int pmtye, QString &pmName, QString &playType, QTime &duration);  // 更新节目
 bool DeleteProgram(int pmNo);                                                                       // 删除节目
 Program SelectProgram(int pmNo);                                                                    // 查询节目信息
 bool AddFileToProgram(int pmNo, int fileNo, int priority);                                          // 给节目分配播放文件
@@ -35,10 +35,12 @@ bool RemoveProgramDev(int pmNo, int devNo);                                     
 QVector<Device> SelectPlayDev(int pmNo);                                                            // 查询节目下分配的设备列表
 bool AddTimingInfo(int pmNo, QDate &startDate, QDate &endDate, QTime &startTime, int weekCnt);      // 当节目为定时时，添加定时信息
 bool UpdateTimingInfo(int pmNo, QDate &startDate, QDate &endDate, QTime &startTime, int weekCnt);   // 修改定时信息
+bool SelectTimeingInfo(int pmNo);
 std::tuple<QDate, QDate, QTime, int> SelectTimingInfo(int pmNo);                                    // 查询定时节目的定时信息
 QVector<Program> SelectPrograms(QString pmName);                                                    // 根据节目名进行模糊查询
 QVector<std::tuple<int, int, QTime>> SelectCurDatePm();                                             // 查询当天需要播放的节目
 QVector<uint> SelectPmDevs(int pmNo);                                                               // 查询节目下设备
+
 
 /** 文件 **/
 bool AddFileRecord(QString &fileName,
@@ -49,7 +51,7 @@ bool DeleteFileRecord(int fileNo);                       // 删除文件记录
 QString SelectFilePath(int fileNo);                      // 查找文件路径
 QVector<FileInfo> SelectAllFileInfo(QString &fileType);  // 查找所有文件信息 by fileType
 QVector<FileInfo>
-SelectFileList(bool checkStatus, QString fuzzyName);     // 根据审核状态和模糊名字查询
+SelectFileList(int checkStatus, QString fuzzyName);     // 根据审核状态和模糊名字查询
 
 /** 权限管理 **/
 std::tuple<bool, int>

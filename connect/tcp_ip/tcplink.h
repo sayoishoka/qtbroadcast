@@ -1,9 +1,7 @@
 #ifndef TCPLINK_H
 #define TCPLINK_H
 
-#include "broadcastmain.h"
 #include "connect/dispatcher.h"
-#include <functional>
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
@@ -25,6 +23,7 @@ public:
     QJsonObject UserLogin(QJsonObject &Obj);
     QJsonObject getAllFuncs(QJsonObject &obj);
     void WriteData(QJsonObject &obj);
+    void broadcastMessage(const QJsonObject &message);
 signals:
     void change_state_yes();
     void change_state_no();
@@ -39,6 +38,12 @@ private:
     QTcpServer *tcpserver;
     QTcpSocket *socket;
     explicit TcpLink(QObject *parent = nullptr);
+    qint64 m_requestSize;
+    qint64 m_receiveSize;
+    QByteArray reciveData;
+
+    QList<QTcpSocket*> connectedSockets;
+
 };
 
 

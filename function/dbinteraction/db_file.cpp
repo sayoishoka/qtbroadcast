@@ -105,12 +105,18 @@ QVector<FileInfo> SelectAllFileInfo(QString &fileType)
     }
 }
 
-QVector<FileInfo> SelectFileList(bool checkStatus, QString fuzzyName)
+QVector<FileInfo> SelectFileList(int checkStatus, QString fuzzyName)
 {
     QVector<FileInfo> fileList;
     QSqlQuery query(QSqlDatabase::database(QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()))));
-    QString sql = "select * from `file` where " +
-                  QString("`audit_status` = " + QString(checkStatus ? "true" : "false")) +
+    QString status;
+    if(checkStatus==2){
+        status = "1";
+    }
+    else{
+        status= "`audit_status` = " + QString(checkStatus ? "true" : "false");
+    }
+    QString sql = "select * from `file` where " +status+
                   QString(" and `file_name` like '%" + fuzzyName + "%';");
 
     if (!query.exec(sql)) {

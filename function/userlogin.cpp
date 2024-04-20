@@ -4,13 +4,11 @@
 #include "qjsonobject.h"
 #include "qsqlquery.h"
 #include "userlogin.h"
-#include "function/dbinteraction/db_program_2.h"
 userlogin* userlogin::userlogin1 = new userlogin;
 
 userlogin::userlogin(QObject *parent)
     : QObject{parent}
 {
-    db_program_2::getdb_program_2();
     registerMethods();
 
 
@@ -19,43 +17,41 @@ userlogin::userlogin(QObject *parent)
 void userlogin::registerMethods(){
     Dispatcher *dispatcher = Dispatcher::getDispatcher();
 
-    dispatcher->Register("mobilelogin",std::bind(&userlogin::login, this,std::placeholders::_1));
-    dispatcher->Register("register",std::bind(&userlogin::regist, this,std::placeholders::_1));
-    dispatcher->Register("modify",std::bind(&userlogin::modify, this,std::placeholders::_1));
+    dispatcher->Register("mobileLogin",std::bind(&userlogin::login, this,std::placeholders::_1));
+    dispatcher->Register("mobileRegist",std::bind(&userlogin::regist, this,std::placeholders::_1));
+    dispatcher->Register("mobileModify",std::bind(&userlogin::modify, this,std::placeholders::_1));
 
 
 }
 QJsonObject userlogin::login(QJsonObject jsonObj){
 
-    // 从 jsonObj 中提取用户名和密码
-    QString username = jsonObj["username"].toString();
-    qDebug()<<"username"<<username;
-    QString password = jsonObj["password"].toString();
-    QString role = QString::number(jsonObj["role"].toInt());
-    qDebug()<<username;
+    // 从 jsonObj 中提取 data 对象
+    QJsonObject data = jsonObj["data"].toObject();
 
-    // 假设你有一个名为 `getUserInfo` 的函数，它接受一个用户名和密码，
-    // 并返回一个包含用户信息的 QJsonObject
+    // 从 data 对象中提取用户名和密码
+    QString username = data["username"].toString();
+    QString password = data["password"].toString();
+    QString role = QString::number(data["role"].toInt());
+
     QJsonObject userInfo = getUserInfo(username,password);
 
-    // 检查用户名和密码是否匹配
     if (!userInfo.isEmpty()) {
         // 如果匹配，返回用户信息
         qDebug()<<"登陆成功";
         return QJsonObject{
-         {"code", 200},
-        {"message", "登陆成功"},
-            {"data", userInfo}
+            {"success", true},
+            {"data", userInfo},
         };
     } else {
         // 如果不匹配，返回错误信息
         return QJsonObject{
             {"code", 401},
-            {"message", "用户名或密码错误"}
+            {"message", "用户名或密码错误"},
+            {"success", false}  // 添加一个字段标识登录失败
         };
     }
-
 }
+
 
 QJsonObject userlogin::getUserInfo(const QString& accountNumber, const QString& password) {
 
@@ -74,7 +70,7 @@ QJsonObject userlogin::getUserInfo(const QString& accountNumber, const QString& 
         userInfo["avatar"] = query.value("avatar").toString();
         userInfo["phone"] = query.value("phone").toString();
         userInfo["email"] = query.value("email").toString();
-        userInfo["role"] = query.value("userRole").toInt();
+        userInfo["role"] = query.value("userrole").toInt();
         return userInfo;
          }
          else{
@@ -91,15 +87,13 @@ QJsonObject userlogin::regist(QJsonObject jsonObj){
     QString password = jsonObj["password"].toString();
     QString phone = QString::number(jsonObj["phone"].toInt());
     QString email = jsonObj["email"].toString();
-    QString Role = QString::number(jsonObj["role"].toInt());
-    qDebug()<<Role;
+
     QSqlQuery query;
-    query.prepare("INSERT INTO mobile_user (username,password,phone,email,userRole) VALUES (:username,:password,:phone,:email,:userRole)");
+    query.prepare("INSERT INTO mobile_user (username,password,phone,email) VALUES (':username',':password',':phone',':email')");
     query.bindValue(":username", username);
     query.bindValue(":password", password);
     query.bindValue(":phone", phone);
     query.bindValue(":email", email);
-    query.bindValue(":userRole", Role);
     query.exec();
 
     QJsonObject userInfo = getUserInfo(username,password);

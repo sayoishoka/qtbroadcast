@@ -30,15 +30,17 @@ bool AddProgram(
     }
 }
 
-bool UpdateProgram(int oldPmNo, int newPmNo, QString &pmName, QString &playType, QTime &duration)
+bool UpdateProgram(int oldPmNo, int newPmNo,int pmtye, QString &pmName, QString &playType, QTime &duration)
 {
     QSqlQuery query(QSqlDatabase::database(QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()))));
+    qDebug()<<playType<<"&&";
     query.prepare("update `program` set "
-                  "`pm_no` = :newPmNo, `pm_name` = :pmName, `play_type` = :playType, `play_duration` = :duration "
+                  "`pm_no` = :newPmNo, `pm_name` = :pmName, `pm_type` = :pmtye,`play_type` = :playType, `play_duration` = :duration "
                   "where `pm_no` = :oldPmNo;");
     query.bindValue(":newPmNo", newPmNo);
     query.bindValue(":oldPmNo", oldPmNo);
     query.bindValue(":pmName", pmName);
+    query.bindValue(":pmtye", pmtye);
     query.bindValue(":playType", playType);
     query.bindValue(":duration", duration);
 
@@ -202,6 +204,7 @@ bool RemovePlayFile(int pmNo, int fileNo)
 
 bool AddProgramDev(int pmNo, int devNo)
 {
+    qDebug()<<"AddProgramDev!";
     QSqlQuery query(QSqlDatabase::database(QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()))));
     query.prepare("insert into `pm_dev`(`pm_no`, `dev_no`) values(:pmNo, :devNo)");
     query.bindValue(":pmNo", pmNo);
@@ -336,6 +339,25 @@ bool UpdateTimingInfo(int pmNo, QDate &startDate, QDate &endDate, QTime &startTi
     }
 }
 
+bool SelectTimeingInfo(int pmNo){
+    QSqlQuery query(QSqlDatabase::database(QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()))));
+    query.prepare("select * from `timing_info` where `pm_no` = :pmNo");
+    query.bindValue(":pmNo", pmNo);
+    if (!query.exec()) {
+        qDebug() << "exec SelectTimeingInfo failed!!!";
+        qDebug() << query.lastError();
+        return false;
+    }
+    else {
+        if (query.next()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+}
 std::tuple<QDate, QDate, QTime, int> SelectTimingInfo(int pmNo)
 {
     // startDate, endDatem, startTime, weekCnt

@@ -1,4 +1,4 @@
-QT       += core gui network sql
+QT       += core gui network sql websockets multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,16 +33,21 @@ UI/user/user_manage.cpp \
 connect/http/httpserver.cpp \
 connect/http/httpsession.cpp \
 connect/tcp_ip/tcplink.cpp \
+    connect/websocket/websocket.cpp \
+    function/db_device_rent.cpp \
 function/dbinteraction/db_dev.cpp \
-    function/dbinteraction/db_device_rent.cpp \
 function/dbinteraction/db_file.cpp \
 function/dbinteraction/db_group.cpp \
 function/dbinteraction/db_pms_mg.cpp \
 function/dbinteraction/db_program.cpp \
-    function/dbinteraction/db_program_2.cpp \
     function/dbinteraction/dbselectupdate.cpp \
 function/device.cpp \
+    function/file.cpp \
 function/group.cpp \
+    function/init.cpp \
+    function/monitor.cpp \
+    function/play.cpp \
+    function/program.cpp \
 function/userlogin.cpp \
 main.cpp
 
@@ -69,13 +74,18 @@ connect/dispatcher.h \
 connect/http/httpserver.h \
 connect/http/httpsession.h \
 connect/tcp_ip/tcplink.h \
+    connect/websocket/websocket.h \
 function/daotype.h \
+    function/db_device_rent.h \
 function/dbinteraction.h \
-    function/dbinteraction/db_device_rent.h \
-    function/dbinteraction/db_program_2.h \
     function/dbinteraction/dbselectupdate.h \
     function/device.h \
+    function/file.h \
 function/group.h \
+    function/init.h \
+    function/monitor.h \
+    function/play.h \
+    function/program.h \
 function/userlogin.h \
 lib/NAudioServerLib.h
 
@@ -98,7 +108,7 @@ UI/user/user_manage.ui
 RESOURCES += \
 main.qrc
 
-LIBS +="D:\qtproject1\build-BroadcastServer-Desktop_Qt_5_9_9_MinGW_32bit-Debug\debug\NAudioServerDll.dll"
+LIBS +="E:\github\qtbroadcast\lib\NAudioServerDll.dll"
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

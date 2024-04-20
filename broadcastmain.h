@@ -52,7 +52,6 @@ private:
     DatabaseConfig *databaseconfig;
     Menu *menu;
     User_Manage *userman;
-    TcpLink *tcp;
     Ui::BroadcastMain *ui;
 };
 

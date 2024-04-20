@@ -5,7 +5,6 @@
 #include <QWidget>
 #include <QSqlQuery>
 #include <QScrollBar>
-#include <UI/user/add/adduser.h>
 namespace Ui {
 class Role_management;
 }
@@ -22,20 +21,8 @@ public:
     };
     ~Role_management();
 
-private slots:
-    void on_delete_2_clicked();
-
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
-    void on_modify_clicked();
-
-    void on_increase_clicked();
-
 private:
     QTimer* timer;
-    AddUser* au;
     void setTable();
     void update_data();//更新表格数据
     QJsonObject getAllRole(QJsonObject &obj);

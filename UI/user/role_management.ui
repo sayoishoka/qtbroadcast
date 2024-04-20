@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="placeholderText">
-    <string>角色id/角色名</string>
+    <string>角色</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -122,19 +122,6 @@
    </property>
    <property name="text">
     <string>修改</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>100</y>
-     <width>100</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>返回</string>
    </property>
   </widget>
  </widget>

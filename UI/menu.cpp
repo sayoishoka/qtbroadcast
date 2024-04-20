@@ -4,10 +4,12 @@
 #include "UI/device/deviceprice_manager.h"
 #include "UI/device/devicerent_manager.h"
 #include "UI/device/group_manager.h"
+#include "connect/tcp_ip/tcplink.h"
+#include "function/dbinteraction.h"
 #include "ui_menu.h"
 #include "UI/user/rights_management.h"
 #include "UI/user/role_management.h"
-#include "UI/user/user_manage.h"
+// #include "UI/user/user_manage.h"
 #include <QDebug>
 
 QString Menu::usena = "";
@@ -37,8 +39,8 @@ void Menu::Open_Function(QTreeWidgetItem *item, int column)
 {
     qDebug() << item->text(0);
     if (QString::localeAwareCompare(item->text(0),"用户管理")==0){
-        ui->stackedWidget->addWidget(User_Manage::getUser_Manage());
-        ui->stackedWidget->setCurrentIndex(ui->stackedWidget->indexOf(User_Manage::getUser_Manage()));
+        // ui->stackedWidget->addWidget(User_Manage::getUser_Manage());
+        // ui->stackedWidget->setCurrentIndex(ui->stackedWidget->indexOf(User_Manage::getUser_Manage()));
     }else if (QString::localeAwareCompare(item->text(0),"主页")==0){
         ui->stackedWidget->setCurrentIndex(0);
     }else if (QString::localeAwareCompare(item->text(0),"角色管理")==0){
@@ -136,10 +138,22 @@ void Menu::init()
 
         pMenuBar = new QMenuBar;
 
-        pMenuBar->setStyleSheet("QMenuBar{font-size:18px;height:65px;background-color:transparent;}"/*设置背景色，跟随背景色*/
-                               "QMenuBar::selected{background-color:transparent;}"/*设置菜单栏选中背景色*/
-                               "QMenuBar::item{widget:80px;font-size:30px;font-family:Microsoft YaHei;color:rgba(0,0,0,1);}"/*设置菜单栏字体为黑色，透明度为1（取值范围0.0-255）*/
-                                );
+        pMenuBar->setStyleSheet(
+            "QMenuBar { "
+            "font-size: 18px; "
+            "height: 65px; "
+            "background-color: transparent; "
+            "} "
+            "QMenuBar::selected { "
+            "background-color: transparent; "
+            "} "
+            "QMenuBar::item { "
+            "font-size: 30px; "
+            "font-family: 'Microsoft YaHei'; "
+            "color: rgb(0, 0, 0); "
+            "padding: 5px; " // 根据需要设置菜单项的内边距
+            "} "
+            );
         pMenuTest1 = new QMenu("用户名");
 
 //        pMenuTest1->setFixedHeight(300);//这样只把菜单变大了
@@ -167,3 +181,16 @@ void Menu::signal_slotConnection()
     connect(TcpLink::getTcpLink(),&TcpLink::change_state_yes,this,&Menu::client_state_yes);
     connect(TcpLink::getTcpLink(),&TcpLink::change_state_no,this,&Menu::client_state_no);
 }
+
+void Menu::on_pushButton_clicked()
+{
+
+    // QJsonObject obj;
+    // obj.insert("response", "testbroad");
+    // obj.insert("status", true);
+    // TcpLink::getTcpLink ()->broadcastMessage (obj);
+    int devno = 5114;
+    int groupNo = getDevGroupNo(devno);
+    qDebug()<<devno<<"**"<<groupNo<<"**";
+}
+
