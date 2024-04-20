@@ -43,7 +43,14 @@ void DeviceModule::InitMappper()
     /* 小程序端部分 */
     //用户获取音响列表
     Dispatcher::getDispatcher()->Register("getGroupLists",std::bind(&DeviceModule::getGroupLists, this,std::placeholders::_1));
-
+    //修改音响音量
+    Dispatcher::getDispatcher()->Register("setDevVolume",std::bind(&DeviceModule::mo_setDevVolume, this,std::placeholders::_1));
+    //批量设置设备音量
+    Dispatcher::getDispatcher()->Register("setDevsVolume",std::bind(&DeviceModule::mo_setDevsVolume, this,std::placeholders::_1));
+    //获取已有分组
+    Dispatcher::getDispatcher()->Register("getGroupList",std::bind(&DeviceModule::mo_getGroupList, this,std::placeholders::_1));
+    //获取音响分组
+    Dispatcher::getDispatcher()->Register("getGroupDevs",std::bind(&DeviceModule::mo_getGroupDevs, this,std::placeholders::_1));
 }
 
 
@@ -139,6 +146,113 @@ QJsonObject DeviceModule::getGroupLists(QJsonObject &data)
      {"code", 200},
      {"message", "成功"},
      {"data", grouplist}
+    };
+}
+
+QJsonObject DeviceModule::mo_setDevVolume(QJsonObject &data)
+{
+    QString uid = QString::number(data.value("userId").toInt());
+    QString devNo = QString::number(data.value("devNo").toInt());
+    QString devVolume = data.value("volume").toString();
+    qDebug()<<"devNo"<<devNo;
+    qDebug()<<"devVolume"<<devVolume;
+    QSqlQuery query;
+    QJsonObject datalist;
+    query.exec("UPDATE device SET volume = '"+devVolume+"' WHERE dev_no IN ("+devNo+")");
+    datalist.insert("devNo",devNo.toInt());
+    datalist.insert("volume",devVolume.toInt());
+    return QJsonObject{
+     {"code", 200},
+     {"message", "成功"},
+     {"data", datalist}
+    };
+}
+
+QJsonObject DeviceModule::mo_setDevsVolume(QJsonObject &data)
+{
+    QString uid = QString::number(data.value("userId").toInt());
+    QJsonArray devNos = data.value("devNos").toArray();
+    QString devVolume = QString::number(data.value("volume").toInt());
+    QString devNoss = "";
+    for (int i = 0; i < devNos.size(); ++i) {
+        int value = devNos.at(i).toInt();
+        if (i == 0){
+            devNoss += value;
+        }else{
+            devNoss += ","+value;
+        }
+    }
+    QSqlQuery query;
+    QJsonArray datalist;
+    query.exec("UPDATE device SET volume = '"+devVolume+"' WHERE dev_no IN ("+devNoss+")");
+    for (int i = 0; i < devNos.size(); ++i){
+        QJsonObject dev;
+        dev.insert("devNo",devNos.at(i).toInt());
+        dev.insert("volume",devVolume.toInt());
+        datalist.append(dev);
+    }
+    return QJsonObject{
+     {"code", 200},
+     {"message", "成功"},
+     {"data", datalist}
+    };
+}
+
+QJsonObject DeviceModule::mo_getGroupList(QJsonObject &data)
+{
+    QString groupName = data.value("groupName").toString();
+    QString GroupNo = QString::number(data.value("GroupNo").toInt());
+    qDebug()<<"groupName:"<<groupName;
+    qDebug()<<"GroupNo:"<<GroupNo;
+    QSqlQuery query;
+    QJsonArray datalist;
+    query.exec("SELECT * FROM `group`");
+    while(query.next()){
+        QJsonObject group;
+        group.insert("groupNo",query.value(0).toInt());
+        group.insert("groupName",query.value(1).toString());
+        datalist.append(group);
+        qDebug()<<query.value(0).toInt();
+        qDebug()<<query.value(1).toString();
+    }
+    return QJsonObject{
+     {"code", 200},
+     {"message", "成功"},
+     {"data", datalist}
+    };
+}
+
+QJsonObject DeviceModule::mo_getGroupDevs(QJsonObject &data)
+{
+    QString uid = QString::number(data.value("userId").toInt());
+    QString groupNo = data.value("groupNo").toString();
+    QSqlQuery query;
+    qDebug()<<"groupNo"<<groupNo;
+    QJsonArray devlist;
+    query.exec("SELECT `group`.gp_no,device.dev_no,device.dev_name,device.volume,device.dev_status FROM `group` "
+               "LEFT JOIN `group_info` ON `group`.gp_no=`group_info`.gp_no "
+               "LEFT JOIN device ON device.dev_no=`group_info`.dev_no "
+               "WHERE `group`.gp_no = "+groupNo);
+    while(query.next()){
+        QJsonObject dev;
+        dev.insert("devNo",query.value(1).toInt());
+        dev.insert("devName",query.value(2).toString());
+        if (query.value(4).toInt()!=0){
+            dev.insert("devStatus",true);
+        }else{
+            dev.insert("devStatus",false);
+        }
+        dev.insert("devVolume",query.value(3).toInt());
+        devlist.append(dev);
+    }
+    QJsonObject datalist = QJsonObject{
+    {"groupNo", groupNo.toInt()},
+    {"devList", devlist}
+   };
+    return QJsonObject{
+     {"code", 200},
+     {"message", "成功"},
+     {"data", datalist}
     };
 }
 

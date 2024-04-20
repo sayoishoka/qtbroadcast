@@ -24,11 +24,17 @@ public:
     ~Rights_management();
 
 private:
+    QTimer* timer;
+    QMap<QString,QString> role;
+    void update_data();
     QJsonObject getRoleFunc(QJsonObject &obj);
     QJsonObject addPms(QJsonObject &obj);
     QJsonObject removePms(QJsonObject &obj);
     explicit Rights_management(QWidget *parent = nullptr);
+    void setUI();
     Ui::Rights_management *ui;
+private slots:
+    void Open_Function(QTreeWidgetItem *item, int column);
 };
 
 #endif // RIGHTS_MANAGEMENT_H

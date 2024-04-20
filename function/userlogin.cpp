@@ -4,11 +4,13 @@
 #include "qjsonobject.h"
 #include "qsqlquery.h"
 #include "userlogin.h"
+#include "function/dbinteraction/db_program_2.h"
 userlogin* userlogin::userlogin1 = new userlogin;
 
 userlogin::userlogin(QObject *parent)
     : QObject{parent}
 {
+    db_program_2::getdb_program_2();
     registerMethods();
 
 
@@ -17,8 +19,8 @@ userlogin::userlogin(QObject *parent)
 void userlogin::registerMethods(){
     Dispatcher *dispatcher = Dispatcher::getDispatcher();
 
-    dispatcher->Register("/login",std::bind(&userlogin::login, this,std::placeholders::_1));
-    dispatcher->Register("/register",std::bind(&userlogin::regist, this,std::placeholders::_1));
+    dispatcher->Register("mobilelogin",std::bind(&userlogin::login, this,std::placeholders::_1));
+    dispatcher->Register("register",std::bind(&userlogin::regist, this,std::placeholders::_1));
     dispatcher->Register("modify",std::bind(&userlogin::modify, this,std::placeholders::_1));
 
 
@@ -27,6 +29,7 @@ QJsonObject userlogin::login(QJsonObject jsonObj){
 
     // 从 jsonObj 中提取用户名和密码
     QString username = jsonObj["username"].toString();
+    qDebug()<<"username"<<username;
     QString password = jsonObj["password"].toString();
     QString role = QString::number(jsonObj["role"].toInt());
     qDebug()<<username;

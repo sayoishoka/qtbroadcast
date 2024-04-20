@@ -32,6 +32,10 @@ private:
     QJsonObject ReSetDevVolume(QJsonObject &data);
     /* 小程序端接口处理 */
     QJsonObject getGroupLists(QJsonObject &data);
+    QJsonObject mo_setDevVolume(QJsonObject &data);
+    QJsonObject mo_setDevsVolume(QJsonObject &data);
+    QJsonObject mo_getGroupList(QJsonObject &data);
+    QJsonObject mo_getGroupDevs(QJsonObject &data);
 public:
     // 获取设备音量
     unsigned char GetVolume(unsigned int devNo);

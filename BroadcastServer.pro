@@ -39,6 +39,7 @@ function/dbinteraction/db_file.cpp \
 function/dbinteraction/db_group.cpp \
 function/dbinteraction/db_pms_mg.cpp \
 function/dbinteraction/db_program.cpp \
+    function/dbinteraction/db_program_2.cpp \
     function/dbinteraction/dbselectupdate.cpp \
 function/device.cpp \
 function/group.cpp \
@@ -71,6 +72,7 @@ connect/tcp_ip/tcplink.h \
 function/daotype.h \
 function/dbinteraction.h \
     function/dbinteraction/db_device_rent.h \
+    function/dbinteraction/db_program_2.h \
     function/dbinteraction/dbselectupdate.h \
     function/device.h \
 function/group.h \

@@ -53,7 +53,8 @@ void httpSession::handleHttpRequest()
 
     // 分发请求
 
-    QJsonObject response = Dispatcher::getDispatcher()->Dispatch(path, obj);
+    qDebug() <<obj.value("required").toString();
+    QJsonObject response = Dispatcher::getDispatcher()->Dispatch(obj.value("required").toString(), obj);
 
     // 将Json对象转换为字节数组
 //    QJsonDocument docResponse(response);

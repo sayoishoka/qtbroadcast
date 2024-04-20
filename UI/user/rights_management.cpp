@@ -10,11 +10,71 @@ Rights_management::Rights_management(QWidget *parent) :
     Dispatcher::getDispatcher()->Register("getRoleFunc",std::bind(&Rights_management::getRoleFunc, this,std::placeholders::_1));
     Dispatcher::getDispatcher()->Register("addPms",std::bind(&Rights_management::addPms, this,std::placeholders::_1));
     Dispatcher::getDispatcher()->Register("removePms",std::bind(&Rights_management::removePms, this,std::placeholders::_1));
+    setUI();
+//    connect(timer, &QTimer::timeout, [=](){
+//        update_data();
+//    });//连接信号槽
+//    timer->start(3000);//3s更新一次
+    connect(ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem *, int)),this,SLOT(Open_Function(QTreeWidgetItem *, int)));
+    update_data();
+}
+
+void Rights_management::setUI()
+{
+
+}
+
+void Rights_management::Open_Function(QTreeWidgetItem *item, int column)
+{
+    if (QString::localeAwareCompare(item->text(0),"管理员")==0){
+        ui->treeWidget_2->clear();
+        for (int i=0;i<role.values("管理员").size();i++) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget_2);
+            item->setText(0,role.values("管理员").value(i));
+        }
+    }else if (QString::localeAwareCompare(item->text(0),"普通用户")==0){
+        ui->treeWidget_2->clear();
+        for (int i=0;i<role.values("普通用户").size();i++) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget_2);
+            item->setText(0,role.values("普通用户").value(i));
+        }
+    }else if (QString::localeAwareCompare(item->text(0),"VIP用户")==0){
+        ui->treeWidget_2->clear();
+        for (int i=0;i<role.values("VIP用户").size();i++) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget_2);
+            item->setText(0,role.values("VIP用户").value(i));
+        }
+    }
 }
 
 Rights_management::~Rights_management()
 {
     delete ui;
+}
+
+void Rights_management::update_data()
+{
+    role.clear();
+    dbSelectUpdate s;
+    QSqlQuery query = s.getData_Sheet("SELECT role.role_no,role.role_name,function.func_no,function.func_name FROM role "
+                                      "LEFT JOIN permission ON role.role_no=permission.role_no "
+                                      "LEFT JOIN FUNCTION ON permission.func_no=function.func_no");
+    while(query.next()){
+        role.insertMulti(query.value(1).toString(),query.value(3).toString());
+    }
+
+    for (int i=role.keys().size()-1;i>=0;i--) {
+        if (QString::localeAwareCompare(role.keys().value(i),role.keys().value(i-1))!=0&&i!=0){
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
+            item->setText(0,role.keys().value(i));
+        }
+        if (i==0){
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
+            item->setText(0,role.keys().value(i));
+        }
+    }
+
+
 }
 
 QJsonObject Rights_management::getRoleFunc(QJsonObject &obj)
