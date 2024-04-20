@@ -24,6 +24,8 @@ private slots:
     void Open_Function(QTreeWidgetItem *item, int column);
     void client_state_yes();
     void client_state_no();
+    void on_pushButton_clicked();
+
 private:
     void timerr();//定时器
     void init();

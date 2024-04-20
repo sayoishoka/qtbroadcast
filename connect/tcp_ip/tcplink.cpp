@@ -17,6 +17,7 @@ void TcpLink::newConnectSlot()
     socket=tcpserver->nextPendingConnection();//获取已经连接的客户端套接字
     qDebug() << "newConnectSlot执行";
     emit change_state_yes();
+    connectedSockets.append(socket);
     connect(socket,SIGNAL(readyRead()),this,SLOT(readyRead_Slot()));
     connect(socket,SIGNAL(disconnected()),this,SLOT(Disconnected_Slot()));
 }
@@ -25,45 +26,87 @@ void TcpLink::newConnectSlot()
 ///接受客户端请求处理
 void TcpLink::readyRead_Slot()
 {
-    QByteArray array = socket->readAll();
-    JsonAnalysis(array);
-    qDebug()<<array;
+    qDebug()<<"//////////////////////////////////////////////////////////////////////";
+    QDataStream inStream(socket);
+    inStream.setVersion(QDataStream::Qt_5_15);
+
+    while(socket->bytesAvailable() > 0) {
+        if(m_requestSize == 0) {
+            inStream >> m_requestSize;
+        }
+        else {
+            qint64 size = qMin(socket->bytesAvailable(), m_requestSize - m_receiveSize);
+            qDebug()<<"size!!:"<<size;
+            QByteArray newData(size, 0);
+            inStream.readRawData(newData.data(), size);
+            reciveData.append(newData);
+            m_receiveSize += size;
+            if(m_receiveSize == m_requestSize && m_requestSize != 0){
+                qDebug()<<"#################################";
+                qDebug()<<reciveData;
+                qDebug()<<"#################################";
+                JsonAnalysis(reciveData);
+
+                reciveData.clear();
+                m_receiveSize = 0;
+                m_requestSize = 0;
+                continue;
+            }
+        }
+    }
 }
 
 void TcpLink::Disconnected_Slot()
 {
     emit change_state_no();
+    connectedSockets.removeAll(socket);
+    socket->deleteLater(); // 清理套接字
 }
 
 void TcpLink::JsonAnalysis(QByteArray &buf)
 {
-//    QDataStream out();
-//    out.setVersion(QDataStream::Qt_4_1);
-//    QDataStream in(socket);
-//    while(!in.atEnd()) {
-//        QByteArray array;
-//        qint64 size;
-//        in >> size;
-//        in >> array;
-//        QJsonDocument doc = QJsonDocument::fromJson(array);
-//        QJsonObject rootObj = doc.object();
-//        QJsonObject writejs = Dispatcher::getDispatcher()->Dispatch(rootObj.value("request").toString(),rootObj);
-//        WriteData(writejs);
-//    }
+
     QJsonParseError err;
     QJsonDocument doc = QJsonDocument::fromJson(buf, &err);
     if (err.error != QJsonParseError::NoError){
-        qDebug()<<"1";
         return;
     }
     QJsonObject rootObj = doc.object();
     QJsonObject writejs = Dispatcher::getDispatcher()->Dispatch(rootObj.value("request").toString(),rootObj);
     WriteData(writejs);
-//    if (QString::localeAwareCompare(rootObj.value("request").toString(),"login")==0){
-//        UserLogin(rootObj);
-//    }else if (QString::localeAwareCompare(rootObj.value("request").toString(),"getAllFuncs")==0){
-//        getAllFuncs(rootObj);
-//    }
+
+
+}
+void TcpLink::WriteData(QJsonObject &obj)
+{
+    QJsonDocument doc;
+    doc.setObject(obj);
+    QByteArray array = doc.toJson();
+    qDebug()<<QString(array);
+    qDebug()<<array.size();
+    QDataStream out(socket);
+    out.setVersion(QDataStream::Qt_4_1);
+    out << (qint64)array.size();
+
+    out << array;
+    socket->flush();
+}
+
+// TcpLink类的成员函数
+void TcpLink::broadcastMessage(const QJsonObject &message)
+{
+    QByteArray jsonBytes = QJsonDocument(message).toJson(QJsonDocument::Compact);
+    for (QTcpSocket *socket : connectedSockets) {
+        if (socket->state() == QTcpSocket::ConnectedState) {
+            // 写入数据大小
+            QDataStream out(socket);
+            out.setVersion(QDataStream::Qt_4_1);
+            out << (qint64)jsonBytes.size();
+
+            out << jsonBytes;
+            socket->flush();
+        }
+    }
 }
 
 QJsonObject TcpLink::UserLogin(QJsonObject &Obj)
@@ -89,9 +132,7 @@ QJsonObject TcpLink::UserLogin(QJsonObject &Obj)
                      <<query.value(0).toInt()
                     <<query.value(1).toString().toUtf8().data()
                    <<query.value(2).toString().toUtf8().data()
-                  <<query.value(3).toString().toUtf8().data()
-                 <<query.value(4).toString().toUtf8().data()
-                <<query.value(5).toInt();
+                <<query.value(3).toString().toUtf8().data();
             if (QString::localeAwareCompare(userpsd,query.value("user_PW").toString())!=0){
                 requestjson.insert("response", "reLogin");
                 requestjson.insert("status", false);
@@ -110,7 +151,7 @@ QJsonObject TcpLink::UserLogin(QJsonObject &Obj)
                 QSqlQuery query2 = s.getData_Sheet("SELECT function.func_no FROM USER "
                                                                 "LEFT JOIN role ON user.role_no=role.role_no "
                                                                 "LEFT JOIN permission ON role.role_no=permission.role_no "
-                                                                "LEFT JOIN FUNCTION ON permission.func_no=function.func_no "
+                                                                "LEFT JOIN `FUNCTION` ON permission.func_no=function.func_no "
                                                                 "WHERE user.user_name = '"+username+"'");
 
                 int flag=0;
@@ -183,18 +224,3 @@ QJsonObject TcpLink::getAllFuncs(QJsonObject &obj)
     return requestjson;
 }
 
-void TcpLink::WriteData(QJsonObject &obj)
-{
-    QJsonDocument doc;
-    doc.setObject(obj);
-    QByteArray array = doc.toJson();
-    qDebug()<<QString(array);
-    qDebug()<<array.size();
-    QDataStream out(socket);
-    out.setVersion(QDataStream::Qt_4_1);
-    out << (qint64)array.size();
-//    int res = out.writeRawData(array.constData(), array.size());
-//    qDebug() << strlen(array.constData());
-    out << array;
-    socket->flush();
-}

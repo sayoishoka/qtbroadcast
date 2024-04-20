@@ -2,6 +2,7 @@
 #include "UI/device/device_manager.h"
 #include "UI/device/mytreewidget.h"
 #include "function/dbinteraction.h"
+#include "function/device.h"
 #include "qdebug.h"
 #include "qheaderview.h"
 #include "qsqlquery.h"
@@ -23,8 +24,6 @@ group_manager::group_manager(QWidget *parent)
     ui->widget->setLayout(new QVBoxLayout);
     ui->widget->layout()->addWidget(myTreeWidget);
     ui->spinBox->setMaximum(10000);
-    device_manager d;
-    d.setSliderStyle(ui->horizontalSlider);
 
     connect(myTreeWidget, &MyTreeWidget::itemMoved, this, &group_manager::onItemMoved);
     connect(myTreeWidget, &QTreeWidget::itemClicked, this, &group_manager::onItemClicked);
@@ -81,9 +80,25 @@ void group_manager::onItemClicked(QTreeWidgetItem *item, int column)
 
     ui->nameline->setText(query.value(1).toString());
     ui->spinBox->setValue(query.value(0).toInt());
-    ui->horizontalSlider->setValue(query.value(2).toInt());
-    ui->lineEdit->setText(query.value(1).toString());
-    ui->lineEdit_2->setText(query.value(1).toString());
+
+    ui->lineEdit->setText(query.value(3).toString());
+    ui->lineEdit_2->setText(query.value(4).toString());
+
+    MySlider *slider = new MySlider(ui->volume);
+    device_manager d;
+    d.setSliderStyle(slider);
+    slider->setRange(0, 100);  // 假设volume的范围是0到100
+    slider->setValue(query.value(2).toInt());
+
+
+    slider->setProperty("devNo", query.value(0).toInt());  // 存储设备的 ID
+
+    // 连接 sliderReleased 信号到 updateDatabase 槽
+    connect(slider, &QSlider::valueChanged, [=](int volume){
+        DeviceModule::getInstance()->setVolume(query.value(0).toInt(),volume);
+    });
+
+
 
 
 }

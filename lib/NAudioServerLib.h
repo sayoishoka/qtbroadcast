@@ -1,6 +1,7 @@
 #ifndef __NAUDIOSERVERDLL_H_
 #define __NAUDIOSERVERDLL_H_
 //接口返回值
+#include <cstdint>
 #define RET_SUCCESS								0  //操作成功
 #define RET_START_CMDSERVER_FAIL				1  //启动命令服务失败
 #define RET_START_DATASERVER_FAIL				2  //启动数据服务失败
@@ -610,7 +611,7 @@ int __stdcall na_start_monitor_decode(unsigned int devno);
 
 /*停止监听解码,不再解码音频数据
 */
-int __stdcall na_stop_monitor_decode();
+int __stdcall na_stop_monitor_decode(unsigned int devno);
 
 /**************************************对讲接口*******************************************/
 /*设置软件端对讲编码格式

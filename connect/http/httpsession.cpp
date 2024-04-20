@@ -53,43 +53,28 @@ void httpSession::handleHttpRequest()
 
     // 分发请求
 
-    qDebug() <<obj.value("required").toString();
-    QJsonObject response = Dispatcher::getDispatcher()->Dispatch(obj.value("required").toString(), obj);
+    QJsonObject response = Dispatcher::getDispatcher()->Dispatch(path, obj);
 
     // 将Json对象转换为字节数组
-//    QJsonDocument docResponse(response);
-//    QByteArray  data = docResponse.toJson(QJsonDocument::Compact)
-//    QString strJson();
-
-//    // QByteArray array = docResponse.toJson();
-//    // qDebug()<<mysocket->socketDescriptor();
-//    // // 使用数据流发送数据
-//    // QTextStream out(mysocket);
-//    QString status = QString::number( response.value("code").toInt());
-//    QString a ;
-//    a.append("HTTP/1.1 "+status+" OK\r\n");
-//    a.append("Server:nginx\r\n");
-//    a.append("Content-Type:application/json;charset=UTF-8\r\n");
-//    a.append("Connection:keep-alive\r\n");
-//    a.append(QString("Content-Length:%1\r\n\r\n").arg(strJson.size()+8));
-//    a.append(strJson);
-//    qDebug()<<a;
-
-//    mysocket->write(a.toStdString().c_str());
     QJsonDocument docResponse(response);
-    QByteArray data = docResponse.toJson(QJsonDocument::Compact); // 将QJsonDocument转换为QByteArray
-    QString strJson(data); // 将QByteArray转换为QString
+    QString strJson(docResponse.toJson(QJsonDocument::Compact));
+
+    // QByteArray array = docResponse.toJson();
+    // qDebug()<<mysocket->socketDescriptor();
+    // // 使用数据流发送数据
+    // QTextStream out(mysocket);
 
     QString a ;
     a.append("HTTP/1.1 200 OK\r\n");
     a.append("Server:nginx\r\n");
     a.append("Content-Type:application/json;charset=UTF-8\r\n");
     a.append("Connection:keep-alive\r\n");
-    a.append(QString("Content-Length:%1\r\n\r\n").arg(data.size())); // 使用QByteArray::size()获取字节数
+    a.append(QString("Content-Length:%1\r\n\r\n").arg(strJson.size()+8));
     a.append(strJson);
     qDebug()<<a;
 
     mysocket->write(a.toStdString().c_str());
+
 }
 
 void httpSession::socketDisconnected(){

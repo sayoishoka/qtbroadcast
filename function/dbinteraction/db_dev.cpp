@@ -95,12 +95,32 @@ bool setDevVolume(uint devNo, uchar volume)
 
 uint getDevNo(QString devName) {
     QSqlQuery query(QSqlDatabase::database(QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()))));
+
+
+
     query.prepare("SELECT dev_no FROM device WHERE dev_name = :devName");
     query.bindValue(":devName", devName);
     if (query.exec() && query.next()) {
         return query.value(0).toUInt();
     } else {
         // 处理错误
+        qDebug() << query.lastError();
+        qDebug() << "getDevNo  fail!!";
+        return 0;
+    }
+}
+
+uint getDevGroupNo(int devNo){
+    QSqlQuery query(QSqlDatabase::database(QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()))));
+    query.prepare("SELECT gp_no FROM `group_info` WHERE dev_no = :devNo");
+    query.bindValue(":devNo", devNo);
+    if (query.exec() && query.next()) {
+        return query.value(0).toUInt ();
+    } else {
+        // 处理错误
+        qDebug() << query.lastError();
+        qDebug() << "getDevGroupNo fail!!";
+
         return 0;
     }
 }
